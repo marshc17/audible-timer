@@ -1,0 +1,29 @@
+.container {
+    margin: 4px;
+}
+
+.delete-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #df4b4b;
+    color: white;
+    height: 24px;
+    width: 24px;
+    text-align: center;
+    border-radius: 4px;
+    margin-right: 4px;
+    padding-top: 2px;
+    cursor: pointer;
+    z-index: 1;
+    user-select: none;
+}
+
+.action-name {
+    display: inline-block;
+    height: 24px;
+    background-color: #95deff;
+    color: #073b4b;
+    padding: 6px 6px 0px 6px;
+    border-radius: 4px;
+}

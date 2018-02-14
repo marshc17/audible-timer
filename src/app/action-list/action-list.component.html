@@ -1,0 +1,10 @@
+<div>
+  <input #actionName placeholder="Action">
+  <input #actionLength placeholder="Length in seconds">
+  <button (click)="addAction(actionName.value, actionLength.value)">Add Action</button>
+</div>
+<div class="action-list">
+  <div class="action-list-item" *ngFor="let action of actions">
+    <app-action-list-item [action]="action" (delete)="deleteAction($event)"></app-action-list-item>
+  </div>
+</div>

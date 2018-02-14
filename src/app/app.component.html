@@ -1,0 +1,17 @@
+<div class="container">
+  <app-timer [actions]="actions" [rounds]="rounds" [delayBetweenActionsInSeconds]="delayBetweenActionsInSeconds" [initialDelayInSeconds]="initialDelayInSeconds"></app-timer>
+  <div class="timer-configuration">
+    <div class="round-configuration">
+      <input class="configuration-input-field" (keyup)="roundChanged($event)" [value]="rounds"> round(s)
+    </div>
+    <div class="delay-configuration">
+      <input class="configuration-input-field" (keyup)="delayChanged($event)" [value]="delayBetweenActionsInSeconds"> second delay between actions
+    </div>
+    <div>
+      <input class="configuration-input-field" (keyup)="initialDelayChanged($event)" [value]="initialDelayInSeconds"> second initial delay
+    </div>
+  </div>
+  <div class="action-list">
+    <app-action-list [(actions)]="actions"></app-action-list>
+  </div>
+</div>

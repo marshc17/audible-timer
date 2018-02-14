@@ -1,0 +1,84 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.current-action {
+    font-size: 48px;
+    height: 80px;
+    padding-left: 8px;
+}
+
+.round-display {
+    background-color: #3f3f3f;
+    border: solid #1194cc;
+    border-width: 5px;
+    border-radius: 8px;
+    width: 280px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.round-text {
+    font-size: 36px;
+    font-family: Courier New, Courier, monospace;
+    font-weight: bold;
+    color: white;
+}
+
+.countdown-display {
+    background-color: #3f3f3f;
+    border: solid #1194cc;
+    border-width: 5px;
+    border-radius: 8px;
+    width: 280px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.countdown-text {
+    font-size: 72px;
+    font-family: Courier New, Courier, monospace;
+    font-weight: bold;
+    color: white;
+}
+
+.button-container {
+    width: 280px;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.button {
+    display: inline-block;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 4px;
+    padding: 6px 12px 2px 12px;
+    height: 32px;
+    width: 64px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.start-button {
+    background-color: rgb(49, 139, 49);
+}
+
+.pause-button {
+    background-color: rgb(45, 116, 197);
+}
+
+.reset-button {
+    background-color: rgb(207, 58, 58);
+}

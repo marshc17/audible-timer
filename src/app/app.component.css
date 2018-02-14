@@ -1,0 +1,28 @@
+.container {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-configuration {
+    margin-top: 16px;
+}
+
+.round-configuration {
+    margin-bottom: 8px;
+}
+
+.delay-configuration {
+    margin-bottom: 8px;
+}
+
+.configuration-input-field {
+    width: 50px;
+}
+
+.action-list {
+    margin-top: 48px;
+}
