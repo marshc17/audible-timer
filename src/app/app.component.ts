@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Action } from './action.model';
+import { Activity } from './activity.model';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +7,9 @@ import { Action } from './action.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  actions: Action[] = [];
+  Activities: Activity[] = [];
   rounds = 1;
-  delayBetweenActionsInSeconds = 5;
+  delayBetweenActivitiesInSeconds = 5;
   initialDelayInSeconds = 5;
 
   roundChanged(keyEvent: any): void {
@@ -17,7 +17,7 @@ export class AppComponent {
   }
 
   delayChanged(keyEvent: any): void {
-    this.delayBetweenActionsInSeconds = keyEvent.target.value;
+    this.delayBetweenActivitiesInSeconds = keyEvent.target.value;
   }
 
   initialDelayChanged(keyEvent: any): void {

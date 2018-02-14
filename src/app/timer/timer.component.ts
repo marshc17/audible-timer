@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { timer } from 'rxjs/observable/timer';
 import * as _ from 'lodash';
 
-import { Action } from '../action.model';
+import { Activity } from '../activity.model';
 import { TextToSpeechService } from '../text-to-speech.service';
 
 @Component({
@@ -20,19 +20,19 @@ export class TimerComponent {
   private _timerObservable: Observable<number>;
   private _timerSubscription: Subscription;
 
-  private _capturedActions: Action[] = [];
-  private _secondsToNextAction: number;
-  private _actionIndex: number;
+  private _capturedActivities: Activity[] = [];
+  private _secondsToNextActivity: number;
+  private _activityIndex: number;
   private _roundsCompleted: number;
-  private _isTransitioningBetweenActions: boolean;
+  private _isTransitioningBetweenActivities: boolean;
   private _lastAnnouncedRound: number;
 
   startStopText: string;
-  action: Action;
+  activity: Activity;
 
-  @Input() actions: Action[];
+  @Input() Activities: Activity[];
   @Input() rounds: number;
-  @Input() delayBetweenActionsInSeconds: number;
+  @Input() delayBetweenActivitiesInSeconds: number;
   @Input() initialDelayInSeconds: number;
 
   get isRunning(): boolean {
@@ -45,7 +45,7 @@ export class TimerComponent {
   }
 
   get displayTime(): string {
-    return this._secondsToNextAction ? this._secondsToNextAction.toString() : '---';
+    return this._secondsToNextActivity ? this._secondsToNextActivity.toString() : '---';
   }
 
   get roundDisplay(): string {
@@ -54,11 +54,11 @@ export class TimerComponent {
       : '---';
   }
 
-  get actionDisplay(): string {
-    return this._isTransitioningBetweenActions
+  get activityDisplay(): string {
+    return this._isTransitioningBetweenActivities
       ? 'Transitioning...'
-      : this.action
-        ? this.action.name
+      : this.activity
+        ? this.activity.name
         : '';
   }
 
@@ -77,11 +77,11 @@ export class TimerComponent {
   resetTimer(): void {
     this.isRunning = false;
     this._notStartedYet = true;
-    this._capturedActions = [];
+    this._capturedActivities = [];
     this._roundsCompleted = null;
-    this._secondsToNextAction = null;
-    this.action = null;
-    this._isTransitioningBetweenActions = false;
+    this._secondsToNextActivity = null;
+    this.activity = null;
+    this._isTransitioningBetweenActivities = false;
 
     if (this._timerSubscription) {
       this._timerSubscription.unsubscribe();
@@ -90,8 +90,8 @@ export class TimerComponent {
 
   private startTimer(): void {
     if (this._notStartedYet) {
-      if (!this.actions || this.actions.length === 0) {
-        alert('You need to add some actions before running the timer!');
+      if (!this.Activities || this.Activities.length === 0) {
+        alert('You need to add some Activities before running the timer!');
         return;
       }
 
@@ -104,17 +104,17 @@ export class TimerComponent {
 
   private initialStart(): void {
     this._notStartedYet = false;
-    this._capturedActions = _.cloneDeep(this.actions);
-    this._actionIndex = -1;
+    this._capturedActivities = _.cloneDeep(this.Activities);
+    this._activityIndex = -1;
     this._roundsCompleted = 0;
-    this._isTransitioningBetweenActions = true;
+    this._isTransitioningBetweenActivities = true;
     this._lastAnnouncedRound = null;
 
     if (this.initialDelayInSeconds > 0) {
-      this._secondsToNextAction = this.initialDelayInSeconds;
+      this._secondsToNextActivity = this.initialDelayInSeconds;
       this.announceTransition();
     } else {
-      this.startNextAction();
+      this.startNextActivity();
     }
 
     this._timerObservable = timer(1000, 1000);
@@ -128,8 +128,8 @@ export class TimerComponent {
     }
   }
 
-  private startNextAction(): void {
-    if (!this._capturedActions) {
+  private startNextActivity(): void {
+    if (!this._capturedActivities) {
       return;
     }
 
@@ -137,10 +137,10 @@ export class TimerComponent {
       return;
     }
 
-    ++this._actionIndex;
+    ++this._activityIndex;
 
-    if (this._actionIndex >= this._capturedActions.length) {
-      this._actionIndex = 0;
+    if (this._activityIndex >= this._capturedActivities.length) {
+      this._activityIndex = 0;
       ++this._roundsCompleted;
 
       if (this._roundsCompleted >= this.rounds) {
@@ -150,8 +150,8 @@ export class TimerComponent {
       }
     }
 
-    this.action = this._capturedActions[this._actionIndex];
-    this._secondsToNextAction = this.action.lengthInSeconds;
+    this.activity = this._capturedActivities[this._activityIndex];
+    this._secondsToNextActivity = this.activity.lengthInSeconds;
 
     const currentRound = this._roundsCompleted + 1;
 
@@ -160,65 +160,65 @@ export class TimerComponent {
       this._textToSpeechService.speak(`Round ${currentRound}`);
     }
 
-    this._textToSpeechService.speak(`Start ${this.action.name}`);
+    this._textToSpeechService.speak(`Start ${this.activity.name}`);
   }
 
   private onTick(second: number): void {
-    --this._secondsToNextAction;
+    --this._secondsToNextActivity;
 
-    if (this._secondsToNextAction <= 0) {
-      this.startNextAction();
-    } else if (!this._isTransitioningBetweenActions) {
-      if (this._secondsToNextAction % 10 === 0) {
-        this._textToSpeechService.speak(`${this._secondsToNextAction} seconds`);
-      } else if (this._secondsToNextAction <= 5) {
-        this._textToSpeechService.speak(this._secondsToNextAction.toString());
+    if (this._secondsToNextActivity <= 0) {
+      this.startNextActivity();
+    } else if (!this._isTransitioningBetweenActivities) {
+      if (this._secondsToNextActivity % 10 === 0) {
+        this._textToSpeechService.speak(`${this._secondsToNextActivity} seconds`);
+      } else if (this._secondsToNextActivity <= 5) {
+        this._textToSpeechService.speak(this._secondsToNextActivity.toString());
       }
     }
   }
 
   private startTransitionIfNeeded(): boolean {
-    // If the last 'action' was a transition period, end the transition and return false
+    // If the last 'activity' was a transition period, end the transition and return false
     // to indicate no transition period is needed since we just finished it.
-    if (this._isTransitioningBetweenActions) {
-      this._isTransitioningBetweenActions = false;
+    if (this._isTransitioningBetweenActivities) {
+      this._isTransitioningBetweenActivities = false;
       return false;
     }
 
-    const transitionNeeded = this.delayBetweenActionsInSeconds && this.delayBetweenActionsInSeconds > 0;
+    const transitionNeeded = this.delayBetweenActivitiesInSeconds && this.delayBetweenActivitiesInSeconds > 0;
 
     // Don't begin a transition if there isn't a transition period set, or if the last
-    // action completed was the last action of the last round (meaning there's no need
-    // to transition to another action since we're done).
-    if (!transitionNeeded || this.isOnLastActionOfLastRound()) {
+    // activity completed was the last activity of the last round (meaning there's no need
+    // to transition to another activity since we're done).
+    if (!transitionNeeded || this.isOnLastActivityOfLastRound()) {
       return false;
     }
 
-    this._isTransitioningBetweenActions = true;
-    this._secondsToNextAction = this.delayBetweenActionsInSeconds;
+    this._isTransitioningBetweenActivities = true;
+    this._secondsToNextActivity = this.delayBetweenActivitiesInSeconds;
 
     this.announceTransition();
 
     return true;
   }
 
-  private isOnLastActionOfLastRound(): boolean {
-    const onLastAction = this._actionIndex === this._capturedActions.length - 1;
+  private isOnLastActivityOfLastRound(): boolean {
+    const onLastActivity = this._activityIndex === this._capturedActivities.length - 1;
     const onLastRound = this._roundsCompleted === this.rounds - 1;
 
-    return onLastAction && onLastRound;
+    return onLastActivity && onLastRound;
   }
 
-  private previewNextAction(): string {
-    const nextActionIndex = this._actionIndex < this._capturedActions.length - 1
-      ? this._actionIndex + 1
+  private previewNextActivity(): string {
+    const nextActivityIndex = this._activityIndex < this._capturedActivities.length - 1
+      ? this._activityIndex + 1
       : 0;
 
-    return this._capturedActions[nextActionIndex].name;
+    return this._capturedActivities[nextActivityIndex].name;
   }
 
   private announceTransition(): void {
-    this._textToSpeechService.speak(`Get ready for ${this.previewNextAction()}`);
+    this._textToSpeechService.speak(`Get ready for ${this.previewNextActivity()}`);
   }
 
 }

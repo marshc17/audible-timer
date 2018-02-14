@@ -3,16 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { TimerComponent } from './timer/timer.component';
-import { ActionListComponent } from './action-list/action-list.component';
-import { ActionListItemComponent } from './action-list-item/action-list-item.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
+import { ActivityListItemComponent } from './activity-list-item/activity-list-item.component';
 import { TextToSpeechService } from './text-to-speech.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimerComponent,
-    ActionListComponent,
-    ActionListItemComponent
+    ActivityListComponent,
+    ActivityListItemComponent
   ],
   imports: [
     BrowserModule
